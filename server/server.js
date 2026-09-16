@@ -47,35 +47,81 @@ app.use('/api/scores', scoreRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/event', eventRoutes);
 
+// Serverless & static asset handling
+const path = require('path');
+
+// Ensure DB is connected for serverless function invocations
+app.use(async (req, res, next) => {
+  if (req.path.startsWith('/api')) {
+    try {
+      await connectDB();
+    } catch (err) {
+      console.error('DB connect middleware error:', err.message);
+    }
+  }
+  next();
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Serve client static build files if present
+const clientDist = path.join(__dirname, '../client/dist');
+app.use(express.static(clientDist));
+
+// SPA Client-side routing fallback
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api') || req.path.startsWith('/socket.io')) {
+    return next();
+  }
+  const indexPath = path.join(clientDist, 'index.html');
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      res.status(200).send(`
+        <!DOCTYPE html>
+        <html>
+        <head><title>FunBuzz</title></head>
+        <body style="font-family: system-ui, sans-serif; background: #070709; color: #fff; text-align: center; padding: 60px 20px;">
+          <h1 style="color: #E50914; font-size: 32px; margin-bottom: 12px;">FunBuzz Backend Active</h1>
+          <p style="color: #A1A1AA; font-size: 16px;">API is operational at <code>/api</code></p>
+        </body>
+        </html>
+      `);
+    }
+  });
+});
+
 // Error handler
 app.use(errorHandler);
 
-// Connect DB and start server
+// Connect DB and start server (local / VM environments)
 const PORT = process.env.PORT || 5000;
 
-connectDB().then(async () => {
-  // Auto-seed if database is empty
-  const User = require('./models/User');
-  const userCount = await User.countDocuments();
-  if (userCount === 0) {
-    console.log('Database is empty, auto-seeding...');
-    try {
-      await require('./utils/seedData')();
-      console.log('Auto-seed complete!');
-    } catch (err) {
-      console.error('Auto-seed failed:', err.message);
+if (!process.env.VERCEL) {
+  connectDB().then(async () => {
+    // Auto-seed if database is empty
+    const User = require('./models/User');
+    const userCount = await User.countDocuments();
+    if (userCount === 0) {
+      console.log('Database is empty, auto-seeding...');
+      try {
+        await require('./utils/seedData')();
+        console.log('Auto-seed complete!');
+      } catch (err) {
+        console.error('Auto-seed failed:', err.message);
+      }
     }
-  }
 
-  server.listen(PORT, () => {
-    console.log(`\n🚀 FunBuzz Server running on port ${PORT}`);
-    console.log(`   API: http://localhost:${PORT}/api`);
-    console.log(`   Socket.IO: ws://localhost:${PORT}`);
-    console.log('');
+    server.listen(PORT, () => {
+      console.log(`\n🚀 FunBuzz Server running on port ${PORT}`);
+      console.log(`   API: http://localhost:${PORT}/api`);
+      console.log(`   Socket.IO: ws://localhost:${PORT}`);
+      console.log('');
+    });
   });
-});
+}
+
+module.exports = app;
+module.exports.server = server;
