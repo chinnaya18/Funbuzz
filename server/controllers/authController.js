@@ -144,8 +144,8 @@ exports.getDemoAccounts = async (req, res) => {
     const scorers = await User.find({ role: 'scorer' }).select('username role');
     
     res.json({
-      admins: admins.map(u => ({ username: u.username, pass: u.username === 'admin' ? 'admin123' : 'superadmin123' })),
-      scorers: scorers.map(u => ({ username: u.username, pass: u.username === 'scorer' ? 'scorer123' : 'evaluator123' })),
+      admins: admins.map(u => ({ username: u.username, pass: u.username === 'admin' ? 'Admin2026#' : 'superadmin123' })),
+      scorers: scorers.map(u => ({ username: u.username, pass: u.username === 'scorer' ? 'scorer2026#' : 'evaluator123' })),
       participants: participants.map(p => ({
         name: p.name,
         rollNumber: p.rollNumber,

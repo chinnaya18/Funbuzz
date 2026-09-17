@@ -32,7 +32,7 @@ exports.getById = async (req, res) => {
 // Create question
 exports.create = async (req, res) => {
   try {
-    const { questionNumber, difficulty, questionText, points } = req.body;
+    const { questionNumber, difficulty, questionText, points, imageUrl } = req.body;
 
     // Generate questionId based on difficulty
     const prefixMap = { chill: 'C', blaze: 'B', savage: 'SV', brutal: 'BR', legendary: 'L' };
@@ -48,7 +48,8 @@ exports.create = async (req, res) => {
       difficulty,
       questionId,
       questionText,
-      points: points || 0
+      points: points || 0,
+      imageUrl: imageUrl || ''
     });
 
     res.status(201).json(question);
@@ -63,12 +64,13 @@ exports.create = async (req, res) => {
 // Update question
 exports.update = async (req, res) => {
   try {
-    const { questionText, points, status } = req.body;
+    const { questionText, points, status, imageUrl } = req.body;
     const updateData = {};
 
     if (questionText !== undefined) updateData.questionText = questionText;
     if (points !== undefined) updateData.points = points;
     if (status !== undefined) updateData.status = status;
+    if (imageUrl !== undefined) updateData.imageUrl = imageUrl;
 
     const question = await Question.findByIdAndUpdate(
       req.params.id,

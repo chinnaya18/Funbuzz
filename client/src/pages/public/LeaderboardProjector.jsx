@@ -252,16 +252,29 @@ const LeaderboardProjector = () => {
                 </div>
               </div>
 
-              {/* Big Stage Question Text Display */}
-              <div className="flex-1 flex flex-col justify-center py-8 my-auto">
-                <div className="text-[12px] font-mono font-bold text-[#71717A] uppercase tracking-[0.25em] flex items-center gap-2 mb-4">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#E50914] animate-pulse" />
-                  AUDITORIUM CHALLENGE PROMPT
-                </div>
+              {/* Big Stage Visual & Question Display */}
+              <div className="flex-1 flex flex-col items-center justify-center my-auto w-full gap-4 py-2">
+                {activeQuestion.imageUrl ? (
+                  <div className="w-full max-w-4xl max-h-[440px] rounded-2xl overflow-hidden border border-[#E50914]/40 shadow-[0_0_35px_rgba(229,9,20,0.25)] bg-[#0A0A10] flex items-center justify-center">
+                    <img
+                      src={activeQuestion.imageUrl}
+                      alt={activeQuestion.questionId}
+                      className="w-full h-full max-h-[440px] object-contain rounded-2xl select-none"
+                      loading="eager"
+                    />
+                  </div>
+                ) : null}
 
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]">
-                  {activeQuestion.questionText}
-                </h2>
+                <div className="w-full text-center max-w-4xl">
+                  <div className="text-[11px] font-mono font-bold text-[#A1A1AA] uppercase tracking-[0.25em] flex items-center justify-center gap-2 mb-2">
+                    <span className="w-2 h-2 rounded-full bg-[#E50914] animate-pulse" />
+                    CHALLENGE RIDDLE &bull; {activeQuestion.questionId}
+                  </div>
+
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-white leading-snug tracking-tight drop-shadow-[0_4px_20px_rgba(0,0,0,0.95)]">
+                    {activeQuestion.questionText}
+                  </h2>
+                </div>
               </div>
 
               {/* Admin Completion Control Bar */}

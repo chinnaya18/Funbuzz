@@ -298,6 +298,16 @@ const Questions = () => {
               </div>
             ) : (
               <div className="space-y-4">
+                {selectedQ.imageUrl && (
+                  <div className="w-full rounded-xl overflow-hidden border border-[#222222] bg-[#0A0A10] max-h-48 flex items-center justify-center">
+                    <img
+                      src={selectedQ.imageUrl}
+                      alt={selectedQ.questionId}
+                      className="w-full h-48 object-contain rounded-xl"
+                    />
+                  </div>
+                )}
+
                 <div className="p-4 rounded bg-[#111111] border border-[#222222] min-h-[90px]">
                   <p className="text-sm text-white font-medium leading-relaxed break-words">{selectedQ.questionText}</p>
                 </div>

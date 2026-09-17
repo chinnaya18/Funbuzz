@@ -20,6 +20,7 @@ const ScorerDashboard = () => {
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const [awarding, setAwarding] = useState(false);
+  const [lastCategory, setLastCategory] = useState('chill');
 
   useEffect(() => {
     fetchParticipants();
@@ -55,21 +56,34 @@ const ScorerDashboard = () => {
       return;
     }
 
+    if (pts < 0 && currentScore <= 0) {
+      toast.error('Score is already 0, cannot deduct further');
+      return;
+    }
+
     setAwarding(true);
     try {
-      const res = await quickAward(selectedParticipant._id, tierKey, pts, `${pts >= 0 ? '+' : ''}${pts} pts on ${label}`);
+      const targetCategory = tierKey || lastCategory || 'chill';
+      const res = await quickAward(selectedParticipant._id, targetCategory, pts, `${pts >= 0 ? '+' : ''}${pts} pts on ${label}`);
       const updatedTotal = res.data.score.totalScore;
       setCurrentScore(updatedTotal);
+      if (pts > 0) {
+        setLastCategory(targetCategory);
+      }
       
       toast.success(
         <div className="text-xs">
-          <span className="font-bold text-white">{selectedParticipant.name}</span> awarded{' '}
-          <span className="font-bold text-[#FF3B47]">{pts >= 0 ? `+${pts}` : pts} pts</span>!
+          <span className="font-bold text-white">{selectedParticipant.name}</span>{' '}
+          {pts < 0 ? (
+            <span className="font-bold text-amber-400">deducted {pts} pts</span>
+          ) : (
+            <span className="font-bold text-[#FF3B47]">awarded +{pts} pts</span>
+          )}!
         </div>,
         { id: 'score-toast', duration: 2000 }
       );
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to award score');
+      toast.error(err.response?.data?.message || 'Failed to update score');
     } finally {
       setAwarding(false);
     }
@@ -249,7 +263,7 @@ const ScorerDashboard = () => {
                   <button
                     type="button"
                     disabled={awarding}
-                    onClick={() => handleAward('chill', 1, 'Bonus')}
+                    onClick={() => handleAward(lastCategory, 1, 'Bonus')}
                     className="rounded-xl bg-[#14141E] hover:bg-[#1E1E28] border border-[#272738] text-white font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer"
                     style={{ height: '44px' }}
                   >
@@ -259,7 +273,7 @@ const ScorerDashboard = () => {
                   <button
                     type="button"
                     disabled={awarding}
-                    onClick={() => handleAward('chill', 2, 'Bonus')}
+                    onClick={() => handleAward(lastCategory, 2, 'Bonus')}
                     className="rounded-xl bg-[#14141E] hover:bg-[#1E1E28] border border-[#272738] text-white font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer"
                     style={{ height: '44px' }}
                   >
@@ -269,7 +283,7 @@ const ScorerDashboard = () => {
                   <button
                     type="button"
                     disabled={awarding}
-                    onClick={() => handleAward('chill', -1, 'Deduction')}
+                    onClick={() => handleAward(lastCategory, -1, 'Deduction')}
                     className="rounded-xl bg-[#14141E] hover:bg-[#1E1E28] border border-[#272738] text-[#A1A1AA] hover:text-[#E50914] font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer"
                     style={{ height: '44px' }}
                   >
@@ -279,7 +293,7 @@ const ScorerDashboard = () => {
                   <button
                     type="button"
                     disabled={awarding}
-                    onClick={() => handleAward('chill', -5, 'Undo')}
+                    onClick={() => handleAward(lastCategory, -5, 'Undo')}
                     className="rounded-xl bg-[#14141E] hover:bg-[#1E1E28] border border-[#272738] text-[#A1A1AA] hover:text-[#E50914] font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-all cursor-pointer"
                     style={{ height: '44px' }}
                   >

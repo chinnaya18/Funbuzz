@@ -15,64 +15,64 @@ const DIFFICULTIES = [
 
 const SAMPLE_QUESTIONS = {
   chill: [
-    'What does HTML stand for?',
-    'What is the output of: console.log(typeof null)?',
-    'Which tag is used to create a hyperlink in HTML?',
-    'What does CSS stand for?',
-    'How do you declare a variable in JavaScript?',
-    'What is the file extension for a Python file?',
-    'Which symbol is used for comments in Python?',
-    'What does API stand for?',
-    'What is the default port for HTTP?',
-    'Which company developed React.js?'
+    'What does a senior engineer call explaining an impossible bug to a small yellow rubber bathtub toy for 3 hours until realizing a missing semicolon?',
+    'In JavaScript, what does [] + [] evaluate to, and what hilarious monstrosity does [] + {} output?',
+    'Why do programmers always confuse Halloween (OCT 31) with Christmas (DEC 25)?',
+    'What is the only valid number in JavaScript defined as Not a Number, yet typeof NaN proudly claims it is a number?',
+    'I have keys but no locks, space but no room, you can enter but you can never leave. Every programmer pounds me when their code crashes. What am I?',
+    'Why do Java developers wear thick glasses?',
+    'A CSS file walks into a bar. Why does the bartender immediately collapse onto a completely different floor?',
+    'If you type "google.com" into Google, what happens according to IT Crowd legend?',
+    'There are 10 types of people in the world. Who are they?',
+    'What is the universal developer excuse when code works on your laptop but crashes in production?'
   ],
   blaze: [
-    'What is the difference between == and === in JavaScript?',
-    'What is a closure in JavaScript?',
-    'What does the "this" keyword refer to in JavaScript?',
-    'What is the purpose of a package.json file?',
-    'What is the difference between let and var?',
-    'What is an arrow function in JavaScript?',
-    'What is the purpose of the useEffect hook in React?',
-    'What does REST stand for?',
-    'What is JSON?',
-    'What is the purpose of Git?'
+    'A programmer\'s wife says: "Go to the store and buy 1 loaf of bread. If they have eggs, buy 10." He returns with 10 loaves of bread. What logical syntax flaw did he execute?',
+    'In Python and JavaScript, why does 0.1 + 0.2 === 0.3 evaluate to FALSE?',
+    'What happens when you run "git push origin master --force" on a shared repository at 4:59 PM on a Friday?',
+    'In JavaScript, what is the output of (\'b\' + \'a\' + + \'a\' + \'a\').toLowerCase()?',
+    'Why does Math.max() return -Infinity while Math.min() returns Infinity in JavaScript?',
+    'You need to sort an array. Your colleague writes an O((n+1)!) algorithm that shuffles until lucky. The heat death of the universe arrives first. What algorithm is this?',
+    'What SQL query does every hacker whisper when attempting classic SQL injection on a login form?',
+    'In Git, what is a "detached HEAD" state? Did somebody get decapitated in the terminal?',
+    'Why does true + true === 2 and true - false === 1 in JavaScript?',
+    'What does the HTTP 418 status code officially declare according to RFC 2324?'
   ],
   savage: [
-    'Explain the event loop in JavaScript.',
-    'What is the difference between SQL and NoSQL databases?',
-    'What is middleware in Express.js?',
-    'Explain the concept of promises in JavaScript.',
-    'What is the Virtual DOM in React?',
-    'What is the purpose of JWT tokens?',
-    'Explain the MVC architecture pattern.',
-    'What is the difference between TCP and UDP?',
-    'What is CORS and why is it needed?',
-    'Explain the concept of hoisting in JavaScript.'
+    'CSS Nightmare: You applied margin: 0 auto; on a <span> element inside a flex container and nothing centered. Why is CSS mocking you, and what property must you add?',
+    'A developer accidentally pushed their .env containing AWS root keys to a public GitHub repo. 3 minutes later, what automated bot phenomenon occurs?',
+    'Look at this loop: for (var i = 0; i < 3; i++) { setTimeout(() => console.log(i), 1000); } - What prints after 1 second, and why did var betray you?',
+    'Why does JSON.stringify({ a: undefined, b: () => {}, c: NaN }) return "{\\"c\\":null}"? Where did a and b disappear to?',
+    'What is the notorious "z-index: 99999999" trap, and why did the modal still render behind the navbar?',
+    'In C/C++, you allocate memory with malloc(1024) inside an infinite game loop and forget free(). What silent OS assassin terminates your RAM?',
+    'Two threads need Resource A and Resource B. Thread 1 locks A and waits for B. Thread 2 locks B and waits for A. Neither ever moves. What deadly romantic tragedy occurred?',
+    'What does "sudo chmod 777 -R /" do to a Linux server, and why will the sysadmin show up at your desk holding a baseball bat?',
+    'In MongoDB, what catastrophic thing happens if you execute db.users.remove({}) without arguments in older versions?',
+    'Why does [] == ![] evaluate to TRUE in JavaScript? Explain the sorcery!'
   ],
   brutal: [
-    'What is the time complexity of quicksort?',
-    'Explain the CAP theorem in distributed systems.',
-    'What is a race condition? How do you prevent it?',
-    'Explain how garbage collection works in JavaScript.',
-    'What is the difference between process and thread?',
-    'What is a WebSocket? How does it differ from HTTP?',
-    'Explain the concept of database indexing.',
-    'What is a memory leak and how do you detect one?',
-    'Explain the SOLID principles in OOP.',
-    'What is the difference between horizontal and vertical scaling?'
+    'Deploying to production at 5:00 PM on Friday: What architectural safety net should have prevented the server explosion?',
+    'According to the CAP theorem in distributed systems, a network partition occurs (P). A bank ATM chooses A over C. What hilarious chaos could occur?',
+    'What is the infamous "Thundering Herd" (or Cache Stampede) problem, and how does a single Redis TTL expiration bring down a million-user database?',
+    'Explain the difference between a Process and a Thread using a restaurant analogy where the kitchen catches fire.',
+    'In Git, what is the life-saving command that rescues commits you accidentally deleted via a bad git reset --hard?',
+    'Why does 2038-01-19 03:14:07 UTC keep senior UNIX engineers awake at night? (The Year 2038 Problem)',
+    'What happens in TCP when the client sends SYN, server sends SYN-ACK, but the client never sends ACK? What cyberattack is this?',
+    'In React, why is using key={index} on a dynamically re-orderable list considered a performance and visual abomination?',
+    'What is a "Race Condition", and what software concurrency mechanism uses a key/flag to prevent two threads from entering the critical section?',
+    'What is DNS Cache Poisoning, and why did visiting your university portal suddenly redirect you to a scam website in Russia?'
   ],
   legendary: [
-    'Design a URL shortener system. What components would you need?',
-    'Explain how a blockchain works at a technical level.',
-    'How would you design a real-time chat system for millions of users?',
-    'Explain the concept of eventual consistency in distributed databases.',
-    'What is the Byzantine Generals Problem?',
-    'How does the V8 engine optimize JavaScript execution?',
-    'Design a rate limiter for an API. Explain your approach.',
-    'What is the difference between symmetric and asymmetric encryption?',
-    'Explain how DNS resolution works step by step.',
-    'How would you design a live leaderboard system that scales to millions?'
+    'The Infinite Loop of Doom: Look at this code: while(1) { fork(); } — What mythological self-replicating weapon/creature is this attack named after?',
+    'What is the "Byzantine Generals Problem", and how did Satoshi Nakamoto solve it in 2008 without needing a central general?',
+    'Alan Turing proved in 1936 that no computer program can determine whether an arbitrary program will finish running or run forever. What is this famous theorem called?',
+    'In 1999, NASA lost the $125M Mars Climate Orbiter because one team used Metric Newtons and Lockheed used Imperial Pound-force. What software principle was violated?',
+    'What is the Dining Philosophers Problem, and how do five thinkers starve to death while holding only one chopstick each?',
+    'What is the "Travelling Salesperson Problem" (TSP), what complexity class does it belong to, and why will an optimal polynomial solution earn you $1,000,000?',
+    'What happened on July 19, 2024 when a single NULL pointer dereference in a CrowdStrike kernel driver (csagent.sys) crashed 8.5 million Windows computers with BSOD?',
+    'Why does Quicksort degrade to O(n²) worst-case time complexity, and how does "Median-of-Three" or Randomized pivot selection prevent the nightmare?',
+    'What are Meltdown and Spectre, and how did CPU hardware "Speculative Execution" accidentally leak passwords across secure kernel memory boundaries?',
+    'If you had to design a live leaderboard for 10 million concurrent participants updating scores every millisecond, what in-memory data structure (used by Redis) gives O(log N) inserts and score ranking?'
   ]
 };
 
@@ -88,29 +88,33 @@ async function seedData() {
   // 1. Create Admin
   await User.create({
     username: 'admin',
-    password: 'admin123',
+    password: 'Admin2026#',
     role: 'admin'
   });
-  console.log('✅ Admin seeded (admin / admin123)');
+  console.log('✅ Admin seeded (admin / Admin2026#)');
 
   // 2. Create Scorer
   await User.create({
     username: 'scorer',
-    password: 'scorer123',
+    password: 'scorer2026#',
     role: 'scorer'
   });
-  console.log('✅ Scorer seeded (scorer / scorer123)');
+  console.log('✅ Scorer seeded (scorer / scorer2026#)');
 
   // 3. Create Questions
   let questionCount = 0;
   for (const diff of DIFFICULTIES) {
     const questions = SAMPLE_QUESTIONS[diff.key];
     for (let i = 0; i < 10; i++) {
+      const qNum = i + 1;
+      const qIdLower = `${diff.prefix}${qNum}`.toLowerCase();
+      const ext = (qIdLower === 'c1' || qIdLower === 'b1' || qIdLower === 'sv1' || qIdLower === 'br1' || qIdLower === 'l1') ? 'jpg' : 'svg';
       await Question.create({
-        questionNumber: i + 1,
+        questionNumber: qNum,
         difficulty: diff.key,
-        questionId: `${diff.prefix}${i + 1}`,
+        questionId: `${diff.prefix}${qNum}`,
         questionText: questions[i],
+        imageUrl: `/questions/${qIdLower}.${ext}`,
         points: diff.defaultPoints,
         status: 'available'
       });

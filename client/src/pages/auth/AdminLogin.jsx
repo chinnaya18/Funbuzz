@@ -129,7 +129,7 @@ const AdminLogin = () => {
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
-                onClick={() => handleSelectAdmin('admin', 'admin123')}
+                onClick={() => handleSelectAdmin('admin', 'Admin2026#')}
                 className={`p-2 rounded border text-xs text-left transition-colors cursor-pointer ${
                   selectedDemo === 'admin'
                     ? 'bg-[#E50914]/15 border-[#E50914] text-white'
@@ -137,7 +137,7 @@ const AdminLogin = () => {
                 }`}
               >
                 <p className="font-semibold text-white">Primary Admin</p>
-                <p className="font-mono text-[10px] text-[#666666]">admin / admin123</p>
+                <p className="font-mono text-[10px] text-[#666666]">admin / Admin2026#</p>
               </button>
 
               <button

@@ -75,13 +75,34 @@ exports.quickAward = async (req, res) => {
       ? difficulty
       : 'chill';
 
-    const prevPoints = currentScore.scores[diffKey] || 0;
-    const newPoints = Math.max(0, prevPoints + Number(delta));
+    const deltaNum = Number(delta);
+    let updatedScores = { ...currentScore.scores.toObject() };
 
-    const updatedScores = {
-      ...currentScore.scores.toObject(),
-      [diffKey]: newPoints
-    };
+    if (deltaNum >= 0) {
+      const prevPoints = updatedScores[diffKey] || 0;
+      updatedScores[diffKey] = prevPoints + deltaNum;
+    } else {
+      // Deduction / Undo logic: deduct from target category first, then cascade across any positive tiers
+      let toDeduct = Math.abs(deltaNum);
+
+      if (updatedScores[diffKey] && updatedScores[diffKey] > 0) {
+        const deductFromTarget = Math.min(updatedScores[diffKey], toDeduct);
+        updatedScores[diffKey] -= deductFromTarget;
+        toDeduct -= deductFromTarget;
+      }
+
+      if (toDeduct > 0) {
+        const tiers = ['legendary', 'brutal', 'savage', 'blaze', 'chill'];
+        for (const t of tiers) {
+          if (toDeduct <= 0) break;
+          if (updatedScores[t] && updatedScores[t] > 0) {
+            const deductAmount = Math.min(updatedScores[t], toDeduct);
+            updatedScores[t] -= deductAmount;
+            toDeduct -= deductAmount;
+          }
+        }
+      }
+    }
 
     const totalScore = (updatedScores.chill || 0) +
                        (updatedScores.blaze || 0) +

@@ -28,6 +28,10 @@ const questionSchema = new mongoose.Schema({
     default: 0,
     min: 0
   },
+  imageUrl: {
+    type: String,
+    default: ''
+  },
   status: {
     type: String,
     enum: ['available', 'selected', 'completed'],
