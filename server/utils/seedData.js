@@ -108,13 +108,12 @@ async function seedData() {
     for (let i = 0; i < 10; i++) {
       const qNum = i + 1;
       const qIdLower = `${diff.prefix}${qNum}`.toLowerCase();
-      const ext = (qIdLower === 'c1' || qIdLower === 'b1' || qIdLower === 'sv1' || qIdLower === 'br1' || qIdLower === 'l1') ? 'jpg' : 'svg';
       await Question.create({
         questionNumber: qNum,
         difficulty: diff.key,
         questionId: `${diff.prefix}${qNum}`,
         questionText: questions[i],
-        imageUrl: `/questions/${qIdLower}.${ext}`,
+        imageUrl: `/questions/${qIdLower}.jpg`,
         points: diff.defaultPoints,
         status: 'available'
       });
