@@ -219,121 +219,146 @@ const Questions = () => {
         })}
       </div>
 
-      {/* Question Detail / Edit Modal */}
+      {/* Question Detail / Edit Modal (80% of Screen) */}
       {selectedQ && (
-        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#111111] border border-[#292929] rounded-2xl max-w-xl w-full p-6 space-y-5 shadow-2xl animate-slide-up">
-            <div className="flex items-center justify-between pb-3 border-b border-[#292929]">
-              <div>
-                <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#E50914]">
+        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-fade-in">
+          <div className="bg-[#0E0E16] border border-[#2A2A3C] rounded-3xl w-[92vw] sm:w-[85vw] lg:w-[80vw] max-w-6xl max-h-[88vh] flex flex-col p-5 sm:p-7 shadow-[0_0_60px_rgba(0,0,0,0.95)] animate-slide-up overflow-hidden">
+            
+            {/* Modal Header */}
+            <div className="flex items-center justify-between pb-3.5 border-b border-[#222232] shrink-0">
+              <div className="flex items-center gap-3">
+                <span className="px-3 py-1 rounded-xl text-xs font-mono font-black uppercase tracking-wider bg-[#E50914]/20 border border-[#E50914]/40 text-[#E50914]">
                   {DIFFICULTIES.find(d => d.key === selectedQ.difficulty)?.label.toUpperCase()} &bull; QUESTION {String(selectedQ.questionNumber).padStart(2, '0')}
                 </span>
-                <h3 className="text-sm font-bold text-white uppercase mt-0.5">Question Controller</h3>
+                <h3 className="text-base font-black text-white uppercase tracking-wider hidden sm:block">
+                  Question Controller
+                </h3>
               </div>
-              <button onClick={() => setSelectedQ(null)} className="text-[#A1A1A1] hover:text-white p-1 rounded-lg hover:bg-[#161616] cursor-pointer">
-                <X size={18} />
+              <button
+                onClick={() => setSelectedQ(null)}
+                className="text-[#A1A1AA] hover:text-white p-2 rounded-xl hover:bg-[#1A1A26] border border-transparent hover:border-[#333346] transition-all cursor-pointer"
+                title="Close"
+              >
+                <X size={20} />
               </button>
             </div>
 
-            {/* Status Change Pills */}
-            <div>
-              <span className="text-xs font-bold text-[#A1A1A1] uppercase tracking-wider block mb-2">
-                Status:
-              </span>
-              <div className="grid grid-cols-3 gap-2.5">
-                {['available', 'in-progress', 'completed'].map(status => (
-                  <button
-                    key={status}
-                    type="button"
-                    onClick={() => handleStatusChange(selectedQ, status)}
-                    className={`py-2 rounded-xl text-xs font-bold uppercase transition-all cursor-pointer border ${
-                      selectedQ.status === status
-                        ? status === 'in-progress'
-                          ? 'bg-[#E50914] text-white border-[#E50914] shadow-md shadow-[#E50914]/20'
-                          : 'bg-[#161616] text-white border-[#E50914]'
-                        : 'bg-[#161616] text-[#A1A1A1] border-[#292929] hover:text-white'
-                    }`}
-                  >
-                    {status === 'in-progress' ? 'Active' : status}
-                  </button>
-                ))}
+            {/* Scrollable Content Area */}
+            <div className="flex-1 overflow-y-auto py-4 flex flex-col gap-4 pr-1">
+              {/* Status Change Pills */}
+              <div className="bg-[#12121D] border border-[#202030] p-3 rounded-2xl shrink-0">
+                <span className="text-[11px] font-mono font-bold text-[#A1A1AA] uppercase tracking-wider block mb-2">
+                  Question State:
+                </span>
+                <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                  {['available', 'in-progress', 'completed'].map(status => (
+                    <button
+                      key={status}
+                      type="button"
+                      onClick={() => handleStatusChange(selectedQ, status)}
+                      className={`py-2 sm:py-2.5 rounded-xl text-xs font-bold uppercase transition-all cursor-pointer border ${
+                        selectedQ.status === status
+                          ? status === 'in-progress'
+                            ? 'bg-[#E50914] text-white border-[#E50914] shadow-lg shadow-[#E50914]/30'
+                            : status === 'completed'
+                            ? 'bg-emerald-600 text-white border-emerald-500 shadow-md'
+                            : 'bg-white/15 text-white border-white/40'
+                          : 'bg-[#161622] text-[#8E8E9A] border-[#262638] hover:text-white hover:border-[#3A3A50]'
+                      }`}
+                    >
+                      {status === 'in-progress' ? 'Active' : status}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
 
-            {/* Edit / View Mode */}
-            {editMode ? (
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-xs font-bold text-[#A1A1A1] uppercase tracking-wider mb-1.5">Question Prompt</label>
-                  <textarea
-                    value={editData.questionText}
-                    onChange={(e) => setEditData(prev => ({ ...prev, questionText: e.target.value }))}
-                    rows={4}
-                    className="input-primary w-full resize-none leading-relaxed"
-                  />
-                </div>
-                <div className="flex items-center gap-3">
-                  <label className="text-xs text-[#A1A1A1] uppercase font-bold">Points:</label>
-                  <input
-                    type="number"
-                    value={editData.points}
-                    onChange={(e) => setEditData(prev => ({ ...prev, points: Number(e.target.value) }))}
-                    className="w-24 input-primary font-mono"
-                  />
-                </div>
-                <div className="flex gap-2 pt-2">
-                  <button
-                    onClick={handleSaveEdit}
-                    className="px-4 py-2 rounded bg-[#E50914] hover:bg-[#B20710] text-white text-xs font-bold uppercase cursor-pointer"
-                  >
-                    Save Changes
-                  </button>
-                  <button
-                    onClick={() => setEditMode(false)}
-                    className="px-4 py-2 rounded bg-[#111111] border border-[#292929] text-[#A1A1A1] text-xs font-bold uppercase cursor-pointer hover:text-white"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {selectedQ.imageUrl && (
-                  <div className="w-full rounded-xl overflow-hidden border border-[#222222] bg-[#0A0A10] max-h-48 flex items-center justify-center">
-                    <img
-                      src={selectedQ.imageUrl}
-                      alt={selectedQ.questionId}
-                      className="w-full h-48 object-contain rounded-xl"
+              {/* Edit / View Mode */}
+              {editMode ? (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold text-[#A1A1AA] uppercase tracking-wider mb-2">Question Prompt</label>
+                    <textarea
+                      value={editData.questionText}
+                      onChange={(e) => setEditData(prev => ({ ...prev, questionText: e.target.value }))}
+                      rows={5}
+                      className="input-primary w-full resize-none leading-relaxed text-base"
                     />
                   </div>
-                )}
-
-                <div className="p-4 rounded bg-[#111111] border border-[#222222] min-h-[90px]">
-                  <p className="text-sm text-white font-medium leading-relaxed break-words">{selectedQ.questionText}</p>
-                </div>
-
-                <div className="flex items-center justify-between pt-2 border-t border-[#222222]">
-                  <span className="text-xs font-mono font-bold text-[#E50914]">
-                    {selectedQ.points} POINTS
-                  </span>
-
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-3">
+                    <label className="text-xs text-[#A1A1AA] uppercase font-bold">Points:</label>
+                    <input
+                      type="number"
+                      value={editData.points}
+                      onChange={(e) => setEditData(prev => ({ ...prev, points: Number(e.target.value) }))}
+                      className="w-28 input-primary font-mono text-base"
+                    />
+                  </div>
+                  <div className="flex gap-3 pt-2">
                     <button
-                      onClick={() => setEditMode(true)}
-                      className="px-3 py-1.5 rounded bg-[#111111] hover:bg-[#1C1C1C] border border-[#292929] text-xs font-bold text-white flex items-center gap-1 cursor-pointer"
+                      onClick={handleSaveEdit}
+                      className="px-5 py-2.5 rounded-xl bg-[#E50914] hover:bg-[#B20710] text-white text-xs font-bold uppercase cursor-pointer shadow-lg"
                     >
-                      <Edit3 size={13} /> Edit
+                      Save Changes
                     </button>
                     <button
-                      onClick={() => setConfirmDelete(selectedQ._id)}
-                      className="px-3 py-1.5 rounded bg-[#111111] hover:bg-[#201010] border border-[#292929] hover:border-[#E50914] text-xs font-bold text-[#E50914] flex items-center gap-1 cursor-pointer"
+                      onClick={() => setEditMode(false)}
+                      className="px-5 py-2.5 rounded-xl bg-[#161622] border border-[#2B2B3C] text-[#A1A1AA] text-xs font-bold uppercase cursor-pointer hover:text-white"
                     >
-                      <Trash2 size={13} /> Delete
+                      Cancel
                     </button>
                   </div>
                 </div>
-              </div>
-            )}
+              ) : (
+                <div className="flex-1 flex flex-col gap-4">
+                  {/* Generated Scenario Image (Large 80% screen proportion) */}
+                  {selectedQ.imageUrl && (
+                    <div className="w-full max-h-[48vh] min-h-[260px] sm:min-h-[340px] rounded-2xl overflow-hidden border border-[#27273A] bg-[#07070D] flex items-center justify-center p-2.5 shadow-inner">
+                      <img
+                        src={selectedQ.imageUrl}
+                        alt={selectedQ.questionId}
+                        className="w-full h-full max-h-[46vh] object-contain rounded-xl select-none"
+                        loading="eager"
+                      />
+                    </div>
+                  )}
+
+                  {/* Question Text Box */}
+                  <div className="p-4 sm:p-5 rounded-2xl bg-[#141420] border border-[#252536] shadow-md">
+                    <span className="text-[10px] font-mono font-bold text-[#E50914] uppercase tracking-widest block mb-1">
+                      CHALLENGE PROMPT
+                    </span>
+                    <p className="text-base sm:text-lg lg:text-xl text-white font-bold leading-relaxed break-words">
+                      {selectedQ.questionText}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="flex items-center justify-between pt-3.5 border-t border-[#222232] shrink-0">
+              <span className="text-sm sm:text-base font-mono font-black text-[#E50914] tracking-wider">
+                {selectedQ.points} POINTS
+              </span>
+
+              {!editMode && (
+                <div className="flex items-center gap-2.5">
+                  <button
+                    onClick={() => setEditMode(true)}
+                    className="px-4 py-2 rounded-xl bg-[#181826] hover:bg-[#202032] border border-[#2E2E42] text-xs font-bold text-white flex items-center gap-1.5 cursor-pointer transition-all"
+                  >
+                    <Edit3 size={14} /> Edit
+                  </button>
+                  <button
+                    onClick={() => setConfirmDelete(selectedQ._id)}
+                    className="px-4 py-2 rounded-xl bg-[#181826] hover:bg-[#2A1014] border border-[#2E2E42] hover:border-[#E50914] text-xs font-bold text-[#E50914] flex items-center gap-1.5 cursor-pointer transition-all"
+                  >
+                    <Trash2 size={14} /> Delete
+                  </button>
+                </div>
+              )}
+            </div>
+
           </div>
         </div>
       )}

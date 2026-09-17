@@ -485,51 +485,76 @@ const Dashboard = () => {
       {/* 5. QUESTION DETAILS MODAL                                                 */}
       {/* ========================================================================= */}
       {selectedQuestion && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#121218] border border-[#272733] rounded-2xl max-w-lg w-full p-6 relative shadow-2xl animate-fade-in">
-            <button
-              onClick={() => setSelectedQuestion(null)}
-              className="absolute top-4 right-4 text-[#8E8E93] hover:text-white"
-            >
-              <X size={18} />
-            </button>
-
-            <div className="flex items-center gap-2 mb-3">
-              <span className="px-2.5 py-1 rounded-lg bg-[#E50914]/15 border border-[#E50914]/30 text-[#E50914] text-xs font-black uppercase">
-                {selectedQuestion.difficulty || 'Tier'} #{selectedQuestion.questionNumber}
-              </span>
-              <span className="text-xs font-bold text-[#A1A1AA]">
-                Value: <span className="text-white font-mono">{selectedQuestion.points} pts</span>
-              </span>
+        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-fade-in">
+          <div className="bg-[#0E0E16] border border-[#27273A] rounded-3xl w-[92vw] sm:w-[85vw] lg:w-[80vw] max-w-6xl max-h-[88vh] flex flex-col p-5 sm:p-7 shadow-[0_0_60px_rgba(0,0,0,0.95)] animate-slide-up overflow-hidden">
+            
+            {/* Header */}
+            <div className="flex items-center justify-between pb-3.5 border-b border-[#222232] shrink-0">
+              <div className="flex items-center gap-3">
+                <span className="px-3 py-1 rounded-xl bg-[#E50914]/20 border border-[#E50914]/40 text-[#E50914] text-xs font-black uppercase font-mono">
+                  {selectedQuestion.difficulty || 'Tier'} #{selectedQuestion.questionNumber}
+                </span>
+                <span className="text-xs font-bold text-[#A1A1AA]">
+                  Value: <span className="text-white font-mono">{selectedQuestion.points} pts</span>
+                </span>
+              </div>
+              <button
+                onClick={() => setSelectedQuestion(null)}
+                className="text-[#A1A1AA] hover:text-white p-2 rounded-xl hover:bg-[#1A1A26] border border-transparent hover:border-[#333346] transition-all cursor-pointer"
+                title="Close"
+              >
+                <X size={20} />
+              </button>
             </div>
 
-            <h3 className="text-base font-bold text-white mb-4 leading-relaxed">
-              {selectedQuestion.questionText}
-            </h3>
+            {/* Scrollable Body */}
+            <div className="flex-1 overflow-y-auto py-4 flex flex-col gap-4 pr-1">
+              {/* Status Control */}
+              <div className="p-3.5 rounded-2xl bg-[#12121D] border border-[#202030] shrink-0">
+                <span className="text-[11px] font-mono font-bold text-[#A1A1AA] uppercase tracking-wider block mb-2">
+                  Current Question State
+                </span>
+                <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                  {['available', 'in-progress', 'completed'].map((st) => (
+                    <button
+                      key={st}
+                      onClick={() => selectedQuestion._id && handleStatusChange(selectedQuestion._id, st)}
+                      className={`py-2 sm:py-2.5 rounded-xl text-xs font-bold capitalize transition-all cursor-pointer border ${
+                        selectedQuestion.status === st
+                          ? st === 'completed'
+                            ? 'bg-emerald-600 text-white border-emerald-500 shadow-md'
+                            : st === 'in-progress'
+                            ? 'bg-[#E50914] text-white border-[#E50914] shadow-lg shadow-[#E50914]/30'
+                            : 'bg-white/15 text-white border-white/40'
+                          : 'bg-[#161622] text-[#8E8E9A] border-[#262638] hover:text-white hover:border-[#3A3A50]'
+                      }`}
+                    >
+                      {st === 'in-progress' ? 'Active' : st}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-            {/* Status Control */}
-            <div className="p-3.5 rounded-xl bg-[#181822] border border-[#262634] mb-5">
-              <span className="text-[11px] font-bold text-[#8E8E93] uppercase block mb-2">
-                Current Question State
-              </span>
-              <div className="grid grid-cols-3 gap-2">
-                {['available', 'in-progress', 'completed'].map((st) => (
-                  <button
-                    key={st}
-                    onClick={() => selectedQuestion._id && handleStatusChange(selectedQuestion._id, st)}
-                    className={`py-2 rounded-lg text-xs font-bold capitalize transition-all cursor-pointer ${
-                      selectedQuestion.status === st
-                        ? st === 'completed'
-                          ? 'bg-emerald-600 text-white'
-                          : st === 'in-progress'
-                          ? 'bg-[#E50914] text-white shadow-[0_0_10px_rgba(229,9,20,0.5)]'
-                          : 'bg-white/20 text-white'
-                        : 'bg-[#121218] border border-[#2B2B38] text-[#8E8E93] hover:text-white'
-                    }`}
-                  >
-                    {st === 'in-progress' ? 'Active' : st}
-                  </button>
-                ))}
+              {/* Generated Image (Large 80% screen proportion) */}
+              {selectedQuestion.imageUrl && (
+                <div className="w-full max-h-[48vh] min-h-[260px] sm:min-h-[340px] rounded-2xl overflow-hidden border border-[#27273A] bg-[#07070D] flex items-center justify-center p-2.5 shadow-inner">
+                  <img
+                    src={selectedQuestion.imageUrl}
+                    alt={selectedQuestion.questionId || 'Question'}
+                    className="w-full h-full max-h-[46vh] object-contain rounded-xl select-none"
+                    loading="eager"
+                  />
+                </div>
+              )}
+
+              {/* Question Text Box */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-[#141420] border border-[#252536] shadow-md">
+                <span className="text-[10px] font-mono font-bold text-[#E50914] uppercase tracking-widest block mb-1">
+                  CHALLENGE PROMPT
+                </span>
+                <h3 className="text-base sm:text-lg lg:text-xl font-bold text-white leading-relaxed break-words">
+                  {selectedQuestion.questionText}
+                </h3>
               </div>
             </div>
 
