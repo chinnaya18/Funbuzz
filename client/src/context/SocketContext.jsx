@@ -19,7 +19,7 @@ export const SocketProvider = ({ children }) => {
       return;
     }
 
-    const serverUrl = import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_API_URL || window.location.origin;
+    const serverUrl = import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_API_URL || 'https://funbuzz-backend.onrender.com';
     const newSocket = io(serverUrl, {
       transports: ['websocket', 'polling']
     });
