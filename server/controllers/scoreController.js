@@ -77,9 +77,9 @@ exports.quickAward = async (req, res) => {
 
     const deltaNum = Number(delta);
     let updatedScores = { ...currentScore.scores.toObject() };
+    const prevPoints = currentScore.scores[diffKey] || 0;
 
     if (deltaNum >= 0) {
-      const prevPoints = updatedScores[diffKey] || 0;
       updatedScores[diffKey] = prevPoints + deltaNum;
     } else {
       // Deduction / Undo logic: deduct from target category first, then cascade across any positive tiers
@@ -104,6 +104,8 @@ exports.quickAward = async (req, res) => {
       }
     }
 
+    const newPoints = updatedScores[diffKey] || 0;
+
     const totalScore = (updatedScores.chill || 0) +
                        (updatedScores.blaze || 0) +
                        (updatedScores.savage || 0) +
@@ -111,14 +113,18 @@ exports.quickAward = async (req, res) => {
                        (updatedScores.legendary || 0);
 
     // Save history
-    await ScoreHistory.create({
-      participantId,
-      adminId: req.user.id,
-      difficulty: diffKey,
-      previousScore: prevPoints,
-      newScore: newPoints,
-      note: note || `Awarded by ${req.user.username || 'Mark Provider'}`
-    });
+    try {
+      await ScoreHistory.create({
+        participantId,
+        adminId: req.user.id,
+        difficulty: diffKey,
+        previousScore: prevPoints,
+        newScore: newPoints,
+        note: note || `Awarded by ${req.user.username || 'Mark Provider'}`
+      });
+    } catch (histErr) {
+      console.error('ScoreHistory creation error:', histErr.message);
+    }
 
     const updated = await Score.findOneAndUpdate(
       { participantId },
