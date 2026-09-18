@@ -33,6 +33,7 @@ const LeaderboardProjector = () => {
   const [lastScored, setLastScored] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [activeQuestion, setActiveQuestion] = useState(null);
+  const [showAllParticipants, setShowAllParticipants] = useState(false);
 
   useEffect(() => {
     getEventStatus()
@@ -209,15 +210,15 @@ const LeaderboardProjector = () => {
           
           {/* SCENARIO A: SINGLE QUESTION SELECTED -> DISPLAY PROMPT BIG */}
           {activeQuestion ? (
-            <div className="flex flex-col justify-between h-full space-y-6 animate-fade-in">
+            <div className="flex flex-col justify-between h-full min-h-0 space-y-3 animate-fade-in">
               
               {/* Question Header Meta Bar */}
-              <div className="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-[#20202C]">
-                <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#20202C] flex-shrink-0">
+                <div className="flex items-center gap-2.5">
                   {/* Back to All Questions Button */}
                   <button
                     onClick={() => setActiveQuestion(null)}
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#14141C] border border-[#2A2A38] hover:border-[#E50914] text-xs font-bold text-white transition-all cursor-pointer shadow-sm"
+                    className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#14141C] border border-[#2A2A38] hover:border-[#E50914] text-xs font-bold text-white transition-all cursor-pointer shadow-sm"
                   >
                     <ArrowLeft size={14} className="text-[#E50914]" />
                     <span>Back to 50 Questions</span>
@@ -225,7 +226,7 @@ const LeaderboardProjector = () => {
 
                   {/* Tier Badge */}
                   <div
-                    className="px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider border shadow-sm"
+                    className="px-3 py-1 rounded-xl text-xs font-black uppercase tracking-wider border shadow-sm"
                     style={{
                       backgroundColor: `${currentTierInfo?.color}25`,
                       borderColor: currentTierInfo?.color,
@@ -236,16 +237,16 @@ const LeaderboardProjector = () => {
                   </div>
 
                   {/* Question Number */}
-                  <span className="text-xs font-mono font-bold text-white uppercase tracking-wider bg-[#14141C] px-3.5 py-2 rounded-xl border border-[#232330]">
+                  <span className="text-xs font-mono font-bold text-white uppercase tracking-wider bg-[#14141C] px-3 py-1 rounded-xl border border-[#232330]">
                     QUESTION {String(activeQuestion.questionNumber).padStart(2, '0')}
                   </span>
                 </div>
 
                 {/* Points Badge & Current Status */}
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#14141C] border border-[#E50914]/50 shadow-[0_0_18px_rgba(229,9,20,0.3)]">
+                  <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#14141C] border border-[#E50914]/50 shadow-[0_0_18px_rgba(229,9,20,0.3)]">
                     <Flame size={16} className="text-[#E50914] fill-current" />
-                    <span className="text-lg font-black font-mono text-[#E50914] tracking-tight">
+                    <span className="text-base font-black font-mono text-[#E50914] tracking-tight">
                       {activeQuestion.points} POINTS
                     </span>
                   </div>
@@ -253,20 +254,20 @@ const LeaderboardProjector = () => {
               </div>
 
               {/* Big Stage Visual & Question Display */}
-              <div className="flex-1 flex flex-col items-center justify-center my-auto w-full gap-4 py-2">
+              <div className="flex-1 min-h-0 flex flex-col items-center justify-center w-full gap-2.5 py-1 overflow-hidden">
                 {activeQuestion.imageUrl ? (
-                  <div className="w-full max-w-4xl max-h-[440px] rounded-2xl overflow-hidden border border-[#E50914]/40 shadow-[0_0_35px_rgba(229,9,20,0.25)] bg-[#0A0A10] flex items-center justify-center">
+                  <div className="w-full max-w-4xl flex-1 min-h-0 rounded-2xl overflow-hidden border border-[#E50914]/40 shadow-[0_0_35px_rgba(229,9,20,0.25)] bg-[#0A0A10] flex items-center justify-center p-1">
                     <img
                       src={activeQuestion.imageUrl}
                       alt={activeQuestion.questionId}
-                      className="w-full h-full max-h-[440px] object-contain rounded-2xl select-none"
+                      className="w-full h-full max-h-[48vh] object-contain rounded-xl select-none"
                       loading="eager"
                     />
                   </div>
                 ) : null}
 
-                <div className="w-full text-center max-w-4xl">
-                  <div className="text-[11px] font-mono font-bold text-[#A1A1AA] uppercase tracking-[0.25em] flex items-center justify-center gap-2 mb-2">
+                <div className="w-full text-center max-w-4xl flex-shrink-0">
+                  <div className="text-[11px] font-mono font-bold text-[#A1A1AA] uppercase tracking-[0.25em] flex items-center justify-center gap-2 mb-1.5">
                     <span className="w-2 h-2 rounded-full bg-[#E50914] animate-pulse" />
                     CHALLENGE RIDDLE &bull; {activeQuestion.questionId}
                   </div>
@@ -278,7 +279,7 @@ const LeaderboardProjector = () => {
               </div>
 
               {/* Admin Completion Control Bar */}
-              <div className="p-4.5 rounded-2xl bg-[#12121A] border border-[#252535] flex flex-wrap items-center justify-between gap-4 shadow-lg">
+              <div className="p-3.5 rounded-2xl bg-[#12121A] border border-[#252535] flex flex-wrap items-center justify-between gap-3 shadow-lg flex-shrink-0">
                 <div className="flex items-center gap-3">
                   <span className="text-xs font-mono uppercase tracking-wider text-[#A1A1AA]">
                     Question State:
@@ -469,13 +470,13 @@ const LeaderboardProjector = () => {
         <div className="projector-scoreboard-section">
           
           {/* Scoreboard Header */}
-          <div className="flex items-center justify-between pb-3.5 border-b border-[#20202C] mb-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-[#E50914]/15 border border-[#E50914]/30 flex items-center justify-center text-[#E50914]">
-                <Trophy size={16} />
+          <div className="flex items-center justify-between pb-2.5 border-b border-[#20202C] mb-2.5 flex-shrink-0">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-[#E50914]/15 border border-[#E50914]/30 flex items-center justify-center text-[#E50914]">
+                <Trophy size={14} />
               </div>
               <div>
-                <h3 className="text-sm font-black text-white uppercase tracking-wider">
+                <h3 className="text-xs font-black text-white uppercase tracking-wider">
                   LIVE SCOREBOARD
                 </h3>
                 <span className="text-[10px] font-mono text-[#8E8E93]">
@@ -484,40 +485,60 @@ const LeaderboardProjector = () => {
               </div>
             </div>
 
+            {/* Top 10 vs All Toggle */}
             <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase">
-                Real-Time
-              </span>
+              <div className="flex items-center gap-1 bg-[#14141C] border border-[#222230] rounded-lg p-0.5 text-[10px] font-bold">
+                <button
+                  type="button"
+                  onClick={() => setShowAllParticipants(false)}
+                  className={`px-2 py-0.5 rounded transition-all cursor-pointer ${
+                    !showAllParticipants ? 'bg-[#E50914] text-white' : 'text-[#8E8E93] hover:text-white'
+                  }`}
+                  title="Show Top 10 participants"
+                >
+                  Top 10
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowAllParticipants(true)}
+                  className={`px-2 py-0.5 rounded transition-all cursor-pointer ${
+                    showAllParticipants ? 'bg-[#E50914] text-white' : 'text-[#8E8E93] hover:text-white'
+                  }`}
+                  title="Show All participants with scrollbar"
+                >
+                  All ({leaderboard.length})
+                </button>
+              </div>
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5" />
             </div>
           </div>
 
           {/* Top 1 Champion Card */}
           {top1 && (
-            <div className="bg-gradient-to-r from-[#1A0A0C] via-[#12121A] to-[#1A0A0C] border border-[#E50914]/60 rounded-2xl p-3.5 mb-3 shadow-[0_0_20px_rgba(229,9,20,0.25)] relative overflow-hidden">
+            <div className="bg-gradient-to-r from-[#1A0A0C] via-[#12121A] to-[#1A0A0C] border border-[#E50914]/60 rounded-xl p-2.5 mb-2 shadow-[0_0_15px_rgba(229,9,20,0.2)] relative overflow-hidden flex-shrink-0">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#E50914] text-white flex items-center justify-center text-xl shadow-[0_0_12px_#E50914] font-bold">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-[#E50914] text-white flex items-center justify-center text-base shadow-[0_0_10px_#E50914] font-bold">
                     🥇
                   </div>
                   <div>
-                    <span className="text-[9px] font-black uppercase tracking-widest text-[#E50914]">
+                    <span className="text-[8px] font-black uppercase tracking-widest text-[#E50914]">
                       CURRENT LEADER
                     </span>
-                    <h4 className="text-sm font-black text-white leading-tight truncate max-w-[130px]">
+                    <h4 className="text-xs font-black text-white leading-tight truncate max-w-[130px]">
                       {top1.name}
                     </h4>
-                    <span className="text-[10px] font-mono text-[#8E8E93]">
+                    <span className="text-[9px] font-mono text-[#8E8E93]">
                       {top1.rollNumber}
                     </span>
                   </div>
                 </div>
 
                 <div className="text-right">
-                  <span className="text-2xl font-black text-[#E50914] font-mono">
+                  <span className="text-xl font-black text-[#E50914] font-mono">
                     {top1.totalScore}
                   </span>
-                  <span className="text-[9px] font-bold text-[#A1A1AA] ml-1 uppercase">
+                  <span className="text-[8px] font-bold text-[#A1A1AA] ml-1 uppercase">
                     PTS
                   </span>
                 </div>
@@ -526,15 +547,15 @@ const LeaderboardProjector = () => {
           )}
 
           {/* Standings Table Header */}
-          <div className="grid grid-cols-[30px_1fr_60px] text-[10px] font-bold text-[#71717A] uppercase tracking-wider pb-2 px-2">
+          <div className="grid grid-cols-[28px_1fr_55px] text-[10px] font-bold text-[#71717A] uppercase tracking-wider pb-1.5 px-2 flex-shrink-0">
             <span>#</span>
             <span>Participant</span>
             <span className="text-right">Score</span>
           </div>
 
-          {/* Scrollable Leaderboard Rows */}
-          <div className="flex-1 overflow-y-auto space-y-1.5 pr-1">
-            {leaderboard.map((entry, idx) => {
+          {/* Scrollable Leaderboard Rows (Showing 10 rows with smooth scrollbar) */}
+          <div className="flex-1 min-h-0 overflow-y-auto pr-1 projector-scrollbar space-y-1">
+            {(showAllParticipants ? leaderboard : leaderboard.slice(0, 10)).map((entry, idx) => {
               const rank = entry.rank || idx + 1;
               const isUpdated = lastScored === entry.participantId;
               const isTop = rank === 1;
