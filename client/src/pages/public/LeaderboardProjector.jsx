@@ -351,10 +351,10 @@ const LeaderboardProjector = () => {
             </div>
           ) : (
             /* SCENARIO B: DEFAULT VIEW — SHOW ALL 50 QUESTIONS ORGANIZED BY TIERS */
-            <div className="flex flex-col h-full gap-4 animate-fade-in">
+            <div className="flex flex-col h-full gap-3 animate-fade-in">
               
               {/* Header Bar of Question Board */}
-              <div className="flex items-center justify-between pb-3 border-b border-[#20202C]">
+              <div className="flex items-center justify-between pb-2.5 border-b border-[#20202C]">
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-[11px] font-mono font-bold tracking-widest text-[#E50914] uppercase">
@@ -367,7 +367,7 @@ const LeaderboardProjector = () => {
                 </div>
 
                 {/* Legend */}
-                <div className="flex items-center gap-4 text-xs font-bold text-[#A1A1AA]">
+                <div className="flex items-center gap-3.5 text-xs font-bold text-[#A1A1AA]">
                   <span className="flex items-center gap-1.5">
                     <span className="w-3 h-3 rounded-md bg-[#064e3b] border border-[#059669]" /> Easy (5p)
                   </span>
@@ -386,8 +386,8 @@ const LeaderboardProjector = () => {
                 </div>
               </div>
 
-              {/* 5 Tier Rows with Dark Colored Boxes (NO LITE SHADES, ONLY INDEX DISPLAYED) */}
-              <div className="flex-1 flex flex-col justify-between py-1 gap-3.5 overflow-y-auto">
+              {/* 5 Tier Rows with Dark Colored Boxes (NO UNNECESSARY SPACES BETWEEN TIERS) */}
+              <div className="flex-1 flex flex-col gap-2 overflow-y-auto pr-1">
                 {TIERS.map(tier => {
                   const tierQuestions = questions
                     .filter(q => q.difficulty === tier.key)
@@ -396,13 +396,13 @@ const LeaderboardProjector = () => {
                   return (
                     <div
                       key={tier.key}
-                      className="p-4 rounded-2xl bg-[#0D0D14] border border-[#1E1E2A] shadow-md flex flex-col justify-between"
+                      className="p-2.5 sm:p-3 rounded-xl bg-[#0D0D14] border border-[#1E1E2A] shadow-sm flex flex-col gap-1.5"
                     >
                       {/* Tier Row Label */}
-                      <div className="flex items-center justify-between mb-2.5 pb-2 border-b border-[#1A1A26]">
-                        <div className="flex items-center gap-2.5">
+                      <div className="flex items-center justify-between pb-1 border-b border-[#1A1A26]">
+                        <div className="flex items-center gap-2">
                           <span
-                            className="px-3 py-1 rounded-lg text-xs font-black uppercase font-mono border"
+                            className="px-2 py-0.5 rounded-md text-[11px] font-black uppercase font-mono border"
                             style={{
                               backgroundColor: `${tier.color}25`,
                               borderColor: tier.color,
@@ -411,18 +411,18 @@ const LeaderboardProjector = () => {
                           >
                             {tier.label} TIER
                           </span>
-                          <span className="text-[11px] text-[#71717A] font-mono">10 Questions</span>
+                          <span className="text-[10px] text-[#71717A] font-mono">10 Questions</span>
                         </div>
                         <span
-                          className="text-xs font-mono font-black"
+                          className="text-[11px] font-mono font-black"
                           style={{ color: tier.color }}
                         >
                           {tier.points} Points Each
                         </span>
                       </div>
 
-                      {/* 10 Dark Colored Question Tiles (ONLY INDEX DISPLAYED, NO POINTS INSIDE) */}
-                      <div className="grid grid-cols-10 gap-2.5">
+                      {/* 10 Dark Colored Question Tiles */}
+                      <div className="grid grid-cols-10 gap-1.5 sm:gap-2">
                         {tierQuestions.map(q => {
                           const isCompleted = q.status === 'completed';
                           const isSelected = q.status === 'selected' || q.status === 'in-progress';
@@ -433,7 +433,7 @@ const LeaderboardProjector = () => {
                               type="button"
                               disabled={isCompleted}
                               onClick={() => handleSelectQuestion(q)}
-                              className={`h-12 rounded-xl font-mono text-sm font-black transition-all flex items-center justify-center ${
+                              className={`h-9 sm:h-10 rounded-lg font-mono text-xs sm:text-sm font-black transition-all flex items-center justify-center ${
                                 isCompleted
                                   ? 'tier-box-completed cursor-not-allowed'
                                   : `${tier.tierClass} cursor-pointer hover:scale-105 active:scale-95`
